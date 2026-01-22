@@ -54,7 +54,7 @@ body {
 /* Frame com Proporção Fixa */
 .gauge-frame {
   margin-top: 100%;
-  width: 250%;
+  width: 230%;
   aspect-ratio: 2 / 1; /* A altura será sempre metade da largura */
   position: relative;
   overflow: hidden;
@@ -94,6 +94,7 @@ body {
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(calc(var(--gauge-value) * 1deg - 90deg));
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+
   z-index: 5;
 }
 
@@ -114,16 +115,16 @@ body {
   position: absolute;
   width: 115%;
   height: 100%;
-  top: -50%; /* Joga os emojis para cima do arco */
+  top: -21%; /* Joga os emojis para cima do arco */
   pointer-events: none;
 }
 
 .emoji {
   position: absolute;
-  left: 42%;
+  left: 40%;
   bottom: 0;
   font-size: clamp(1.2rem, 5vw, 2rem); /* Tamanho de fonte fluido */
-  transform: rotate(var(--angle)) translateY(-450%); /* Projeção baseada em % */
+  transform: rotate(var(--angle)) translateY(-550%); /* Projeção baseada em % */
   transform-origin: center bottom;
 }
 
@@ -146,12 +147,30 @@ body {
 
 .gauge-actions {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   width: 100%;
+  justify-content: center;
 }
 
+/* Estilização do Campo de Escrita */
+#gauge-input {
+  flex: 2;
+  padding: 15px;
+  border: 2px solid #222;
+  border-radius: 15px;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+#gauge-input:focus {
+  border-color: var(--color-med-low);
+}
+
+/* Botão de confirmação */
 .ctrl-btn {
-  flex: 1; /* Botões dividem o espaço igualmente */
+  flex: 1;
   padding: 15px;
   border: none;
   background: #222;
@@ -159,5 +178,9 @@ body {
   border-radius: 15px;
   cursor: pointer;
   font-weight: bold;
-  font-size: clamp(0.7rem, 3vw, 1rem);
+  transition: background 0.2s;
+}
+
+.ctrl-btn:hover {
+  background: #444;
 }

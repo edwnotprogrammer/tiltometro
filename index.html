@@ -12,7 +12,6 @@
             <h1>Tiltômetro</h1>
             <hr>
         </header>
-
         <section class="dashboard">
             <div class="gauge-wrapper">
                 <div class="emoji-overlay">
@@ -23,7 +22,6 @@
                     <span class="emoji" style="--angle: 48deg">😟</span>
                     <span class="emoji" style="--angle: 76deg">😡</span>
                 </div>
-
                 <div class="gauge-frame">
                     <div class="gauge-arc"></div>
                     <div class="needle" id="needle"></div>
@@ -32,12 +30,16 @@
                         <span class="mark-high">HIGH</span>
                     </div>
                 </div>
-
                 <h2 class="gauge-title">STRESS LEVEL</h2>
-
+                
                 <div class="gauge-actions">
-                    <button class="ctrl-btn" onclick="adjustLevel(-15)">- </button>
-                    <button class="ctrl-btn" onclick="adjustLevel(15)">+ </button>
+                    <input 
+                        type="number" 
+                        id="gauge-input" 
+                        placeholder="Valor (ex: 15)" 
+                        onkeydown="if(event.key === 'Enter') applyInputValue()"
+                    >
+                    <button class="ctrl-btn" onclick="applyInputValue()">APLICAR</button>
                 </div>
             </div>
         </section>
