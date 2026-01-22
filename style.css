@@ -1,0 +1,163 @@
+:root {
+  --color-low: #009100;
+  --color-med-low: #64d301;
+  --color-med: #ffcc00;
+  --color-high: #ff0000;
+  --gauge-value: 0;
+}
+
+/* Reset e Layout Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f4f4f4;
+  font-family: sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-section {
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 40px;
+}
+
+.header-section hr {
+  border: 1px solid #222;
+  margin-top: 1px;
+}
+
+/* Container do Medidor Responsivo */
+.gauge-wrapper {
+  width: 100%;
+  max-width: 400px; /* Tamanho máximo no desktop */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Frame com Proporção Fixa */
+.gauge-frame {
+  margin-top: 100%;
+  width: 250%;
+  aspect-ratio: 2 / 1; /* A altura será sempre metade da largura */
+  position: relative;
+  overflow: hidden;
+}
+
+.gauge-arc {
+  width: 100%;
+  height: 200%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from -90deg at 50% 50%,
+    var(--color-low) 0deg 30deg,
+    #fff 30deg 32deg,
+    var(--color-med-low) 32deg 60deg,
+    #fff 60deg 62deg,
+    #bef100 62deg 90deg,
+    #fff 90deg 92deg,
+    var(--color-med) 92deg 120deg,
+    #fff 120deg 122deg,
+    #ff8a00 122deg 150deg,
+    #fff 150deg 152deg,
+    var(--color-high) 152deg 180deg,
+    transparent 180deg
+  );
+  mask: radial-gradient(circle at 50% 50%, transparent 68%, black 69%);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 68%, black 69%);
+}
+
+/* Agulha agora usa % para não quebrar no mobile */
+.needle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 1.5%; /* Fina e proporcional */
+  height: 100%; /* Proporcional ao arco */
+  background: #222;
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(calc(var(--gauge-value) * 1deg - 90deg));
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 5;
+}
+
+.needle::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 400%; /* Base proporcional à agulha */
+  aspect-ratio: 1;
+  background: #222;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+/* Emojis Dinâmicos */
+.emoji-overlay {
+  position: absolute;
+  width: 115%;
+  height: 100%;
+  top: -50%; /* Joga os emojis para cima do arco */
+  pointer-events: none;
+}
+
+.emoji {
+  position: absolute;
+  left: 42%;
+  bottom: 0;
+  font-size: clamp(1.2rem, 5vw, 2rem); /* Tamanho de fonte fluido */
+  transform: rotate(var(--angle)) translateY(-450%); /* Projeção baseada em % */
+  transform-origin: center bottom;
+}
+
+/* Labels e Botões */
+.gauge-markers {
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10%;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.gauge-title {
+  margin: 20px 0;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+}
+
+.gauge-actions {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.ctrl-btn {
+  flex: 1; /* Botões dividem o espaço igualmente */
+  padding: 15px;
+  border: none;
+  background: #222;
+  color: #fff;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: clamp(0.7rem, 3vw, 1rem);
+}
