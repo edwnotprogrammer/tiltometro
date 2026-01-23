@@ -173,7 +173,7 @@ body {
 .emoji {
   position: absolute;
   left: 50%;
-  bottom: 6vh;
+  bottom: 7vh;
   font-size: clamp(1.5rem, 5vw, 2.2rem);
   transform: translateX(-50%) rotate(var(--angle)) translateY(-500%);
   transform-origin: center bottom;
