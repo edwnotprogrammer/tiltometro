@@ -1,49 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Tiltômetro</title>
-</head>
-<body>
-    <main class="main-container">
-        <header class="header-section">
-            <h1>Tiltômetro</h1>
-            <hr>
-        </header>
-        <section class="dashboard">
-            <div class="gauge-wrapper">
-                <div class="emoji-overlay">
-                    <span class="emoji" style="--angle: -75deg">😁</span>
-                    <span class="emoji" style="--angle: -45deg">😄</span>
-                    <span class="emoji" style="--angle: -13deg">🙂</span>
-                    <span class="emoji" style="--angle: 18deg">😐</span>
-                    <span class="emoji" style="--angle: 48deg">😟</span>
-                    <span class="emoji" style="--angle: 76deg">😡</span>
-                </div>
-                <div class="gauge-frame">
-                    <div class="gauge-arc"></div>
-                    <div class="needle" id="needle"></div>
-                    <div class="gauge-markers">
-                        <span class="mark-low">LOW</span>
-                        <span class="mark-high">HIGH</span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>Tiltômetro</title>
+    </head>
+    <body>
+        <main class="main-container">
+            <header class="header-section">
+                <h1>TILTÔMETRO</h1>
+            </header>
+            <section class="dashboard">
+                <div class="gauge-wrapper">
+                    <div id="percentage-card" class="percentage-card" onclick="toggleHistory()">
+                        0%
+                    </div>
+                    <div id="history-panel" class="history-panel">
+                        <div class="history-header">
+                            <h3>Histórico de Tilt</h3>
+                            <button class="clear-btn" onclick="clearHistory()">
+                                Limpar Tudo
+                            </button>
+                        </div>
+                        <ul id="history-list"></ul>
+                    </div>
+                    <div class="emoji-overlay">
+                        <span class="emoji" style="--angle: -76deg">😁</span>
+                        <span class="emoji" style="--angle: -45deg">😄</span>
+                        <span class="emoji" style="--angle: -15deg">🙂</span>
+                        <span class="emoji" style="--angle: 17deg">😐</span>
+                        <span class="emoji" style="--angle: 47deg">😟</span>
+                        <span class="emoji" style="--angle: 76deg">😡</span>
+                    </div>
+                    <div class="gauge-posicion">
+                        <div class="gauge-frame">
+                            <div class="gauge-arc"></div>
+                            <div class="needle" id="needle"></div>
+                            <div class="gauge-markers">
+                                <span class="mark-low">LOW</span>
+                                <span class="mark-high">HIGH</span>
+                            </div>
+                        </div>
+                        <h2 class="gauge-title">TILT LEVEL</h2>
+                        <div class="gauge-actions">
+                            <input
+                                type="number"
+                                id="gauge-input"
+                                min="1"
+                                max="6"
+                                placeholder="1 A 6"
+                                onkeydown="if (event.key === 'Enter') applyInputValue();"
+                            >
+                        </div>
+                        <button class="reset-btn" onclick="resetGauge()">RESETAR MEDIDOR</button>
                     </div>
                 </div>
-                <h2 class="gauge-title">STRESS LEVEL</h2>
-                
-                <div class="gauge-actions">
-                    <input 
-                        type="number" 
-                        id="gauge-input" 
-                        placeholder="Valor (ex: 15)" 
-                        onkeydown="if(event.key === 'Enter') applyInputValue()"
-                    >
-                    <button class="ctrl-btn" onclick="applyInputValue()">APLICAR</button>
-                </div>
-            </div>
-        </section>
-    </main>
-    <script src="script.js"></script>
-</body>
+            </section>
+        </main>
+        <script src="script.js"></script>
+    </body>
 </html>

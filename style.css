@@ -6,58 +6,111 @@
   --gauge-value: 0;
 }
 
-/* Reset e Layout Base */
+/* Reset e Estrutura Principal */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+.header-section {
+  text-align: center;
+  margin-top: 5vh;
+
+}
+
 
 body {
   background-color: #f4f4f4;
-  font-family: sans-serif;
+  font-family: "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
-.main-container {
+.gauge-posicion {
+  margin-top: 50%;
   width: 100%;
-  padding: 20px;
+  max-width: 600px;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.header-section {
-  text-align: center;
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 40px;
-}
-
-.header-section hr {
-  border: 1px solid #222;
-  margin-top: 1px;
-}
-
-/* Container do Medidor Responsivo */
+/* Container do Medidor - O "âncora" para elementos absolutos */
 .gauge-wrapper {
   width: 100%;
-  max-width: 400px; /* Tamanho máximo no desktop */
-  position: relative;
+  max-width: 400px;
+  position: relative; /* Essencial para o histórico não fugir */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Frame com Proporção Fixa */
+/* Card de Porcentagem */
+.percentage-card {
+  margin-top: 10vh;
+  background-color: #222;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 15px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  z-index: 20;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.percentage-card:hover {
+  transform: scale(1.05);
+}
+.percentage-card.update {
+  transform: scale(1.15);
+}
+
+/* Painel de Histórico Flutuante */
+.history-panel {
+  display: none;
+  position: absolute; /* Sai do fluxo: não empurra o medidor */
+  top: 19vh;
+  width: 320%;
+  max-height: 250px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  border: 2px solid #222;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  z-index: 100; /* Sempre à frente */
+  overflow-y: auto;
+}
+
+.history-panel.active {
+  display: block;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Medidor e Agulha */
 .gauge-frame {
-  margin-top: 100%;
-  width: 230%;
-  aspect-ratio: 2 / 1; /* A altura será sempre metade da largura */
+  width: 300%;
+  aspect-ratio: 2 / 1;
   position: relative;
   overflow: hidden;
+  margin-top: -7.5vh;
 }
 
 .gauge-arc {
@@ -83,104 +136,123 @@ body {
   -webkit-mask: radial-gradient(circle at 50% 50%, transparent 68%, black 69%);
 }
 
-/* Agulha agora usa % para não quebrar no mobile */
 .needle {
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: 1.5%; /* Fina e proporcional */
-  height: 100%; /* Proporcional ao arco */
+  width: 1.5%;
+  height: 90%;
   background: #222;
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(calc(var(--gauge-value) * 1deg - 90deg));
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 5;
 }
 
 .needle::after {
   content: "";
   position: absolute;
-  bottom: -8px;
+  bottom: -9px;
   left: 50%;
-  width: 400%; /* Base proporcional à agulha */
+  width: 400%;
   aspect-ratio: 1;
   background: #222;
   border-radius: 50%;
   transform: translateX(-50%);
 }
 
-/* Emojis Dinâmicos */
+/* Emojis */
 .emoji-overlay {
   position: absolute;
-  width: 115%;
-  height: 100%;
-  top: -21%; /* Joga os emojis para cima do arco */
+  width: 100%;
+  height: 105%;
+  top: -26%;
   pointer-events: none;
 }
 
 .emoji {
   position: absolute;
-  left: 40%;
-  bottom: 0;
-  font-size: clamp(1.2rem, 5vw, 2rem); /* Tamanho de fonte fluido */
-  transform: rotate(var(--angle)) translateY(-550%); /* Projeção baseada em % */
+  left: 50%;
+  bottom: 6vh;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  transform: translateX(-50%) rotate(var(--angle)) translateY(-500%);
   transform-origin: center bottom;
 }
 
-/* Labels e Botões */
-.gauge-markers {
-  position: absolute;
-  bottom: 5px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10%;
-  font-weight: bold;
-  font-size: 0.8rem;
-}
-
-.gauge-title {
-  margin: 20px 0;
-  font-size: clamp(1rem, 4vw, 1.5rem);
-}
-
+/* Controles */
 .gauge-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  justify-content: center;
+  margin-top: 10px;
 }
 
-/* Estilização do Campo de Escrita */
 #gauge-input {
   flex: 2;
-  padding: 15px;
+  padding: 16px;
   border: 2px solid #222;
-  border-radius: 15px;
-  font-size: 1rem;
-  text-align: center;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
   outline: none;
-  transition: border-color 0.3s;
+  transition: 0.3s;
+  text-align: center;
 }
 
 #gauge-input:focus {
   border-color: var(--color-med-low);
+  box-shadow: 0 0 0 4px rgba(100, 211, 1, 0.2);
+}
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-/* Botão de confirmação */
-.ctrl-btn {
-  flex: 1;
-  padding: 15px;
-  border: none;
-  background: #222;
-  color: #fff;
-  border-radius: 15px;
+.clear-btn {
+  background: none;
+  border: 1px solid #ff0000;
+  color: #ff0000;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
-.ctrl-btn:hover {
-  background: #444;
+.clear-btn:hover {
+  background: #ff0000;
+  color: #fff;
+}
+.reset-btn {
+  margin-top: 15px;
+  background: none;
+  border: 1px solid #777;
+  color: #777;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.reset-btn:hover {
+  background: #222;
+  color: #fff;
+  border-color: #222;
+}
+/* Chrome, Safari, Edge e Opera */
+#gauge-input::-webkit-outer-spin-button,
+#gauge-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#gauge-input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
